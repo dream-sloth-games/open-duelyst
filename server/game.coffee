@@ -8,7 +8,7 @@ _ = require 'underscore'
 colors = require 'colors' # used for console message coloring
 jwt = require 'jsonwebtoken'
 io = require 'socket.io'
-ioJwt = require 'socketio-jwt'
+ioJwt = require '@thream/socketio-jwt'
 Promise = require 'bluebird'
 kue = require 'kue'
 moment = require 'moment'
@@ -124,11 +124,12 @@ healthPing = io
 
 # run main io.sockets inside of the domain
 d.run () ->
-	io.sockets.on "authenticated", (socket) ->
+	io.sockets.on "connection", (socket) ->
 		# add the socket to the error domain
 		d.add(socket)
 
 		# Socket is now autheticated, continue to bind other handlers
+		socket.decoded_token = socket.decdedToken
 		Logger.module("IO").debug "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
 
 		savePlayerCount(++playerCount)

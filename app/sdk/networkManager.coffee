@@ -72,15 +72,17 @@ class NetworkManager
 				@socketManager = new io.Manager("#{window.location.hostname}:8000", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 1 })
 			else
 				@socketManager = new io.Manager("wss://#{gameServerAddress}", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 20 })
+
+			# TODO: should remove this dependency
+			# Session = require 'app/common/session'
+			Storage = require 'app/common/storage'
+			token = Storage.get('token')
+
 			# Connect to a specific socket on the host, currently /
-			@socket = @socketManager.socket('/', {forceNew: true})
+			@socket = @socketManager.socket('/', {forceNew: true, auth: { token: "Bearer #{token}" }})
 
 			# When the socket opens, send the token for authetication
 			@socket.on 'connect', (socket) ->
-				# TODO: should remove this dependency
-				# Session = require 'app/common/session'
-				Storage = require 'app/common/storage'
-				token = Storage.get('token')
 				@emit('authenticate', {token: token})
 
 			# when you receive a message that the connection is ready (happens after authentication)
