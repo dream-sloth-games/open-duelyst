@@ -16,6 +16,7 @@
     "@thream/socketio-jwt": "2.2.1",
     "app-module-path": "^1.0.6",
     "backbone": "1.1.2",
+    "blessed": "^0.1.81",
     "backbone-virtual-collection": "./packages/Backbone.VirtualCollection",
     "backbone.marionette": "2.2.2",
     "backfire": "./packages/backfire",
@@ -161,6 +162,7 @@
     "watchify": "^3.2.2"
   },
   "scripts": {
+    "terminal": "node ./terminal/index.js",
     "api": "node ./bin/api",
     "game": "node ./bin/game",
     "sp": "node ./bin/single_player",
